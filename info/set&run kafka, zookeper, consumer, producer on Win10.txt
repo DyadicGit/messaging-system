@@ -1,0 +1,19 @@
+** from Kirils tutorial:
+**  https://medium.com/zenitech/cloud-application-with-spring-cloud-stream-and-apache-kafka-4a7086194834
+
+******************************************************************
+** paste kafka folder not to far away from C:\
+
+
+** Configure and run Apache Kafka
+cd C:\Dyadics_playground\kafka\bin\windows
+
+zookeeper-server-start.bat ..\..\config\zookeeper.properties
+kafka-server-start.bat ..\..\config\server.properties
+
+** Test Messaging System
+** consumer:
+kafka-console-consumer.bat --bootstrap-server 127.0.0.1:9092 --topic testing
+** producer:
+kafka-console-producer.bat --broker-list 127.0.0.1:9092 --topic testing
+

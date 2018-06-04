@@ -1,0 +1,8 @@
+**********************
+** COMMANDS I USED	**
+**********************
+
+** used this to get a container's log by using it's Id (got it whe doing docker-compose UP)
+docker-machine ssh messaging-system docker logs d041e625be1b
+
+

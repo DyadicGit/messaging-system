@@ -1,25 +1,38 @@
-set M2_HOME=D:\apache-maven-3.5.2
-set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_161
-
 docker-machine rm messaging-system -f
-docker-machine create -d virtualbox --virtualbox-memory "4096" messaging-system
+docker-machine create -d virtualbox --virtualbox-memory "4096" --virtualbox-cpu-count "2"  --virtualbox-disk-size "80000"  messaging-system
 docker-machine ip messaging-system > IP
 SET /p MESSAGING_SYSTEM= < IP
 DEL IP
 
-docker-machine ssh messaging-system sudo curl -L "https://github.com/docker/compose/releases/download/1.10.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+rem "Setting ashared folder as [app]"
+::"vboxmanage sharedfolder add messaging-system --name app --hostpath C:\TEST_playground\messaging-system --automount"
+set VM_NAME="messaging-system"
+set NAME=app
+set HOSTPATH=C:\TEST_playground\messaging-system
+vboxmanage startvm messaging-system --type emergencystop
+vboxmanage sharedfolder add %VM_NAME% --name %NAME% --hostpath %HOSTPATH% --automount
+vboxmanage sharedfolder remove %VM_NAME% --name c/Users
+vboxmanage startvm messaging-system
+TIMEOUT /T 30
+::pause
+
+docker-machine ssh messaging-system sudo curl -L "https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 docker-machine ssh messaging-system sudo chmod +x /usr/local/bin/docker-compose
 docker-machine ssh messaging-system sudo mkdir /mnt/app
-echo "Mount application point as [app]"
-pause
+
+rem "Mounting application point as [app]"
+TIMEOUT /T 15
 docker-machine ssh messaging-system sudo mount -t vboxsf app /mnt/app
 
-call mvn clean package -q -f discovery\pom.xml
-call mvn clean package -q -f configuration\pom.xml
-call mvn clean package -q -f http-request-consumer\pom.xml
-call mvn clean package -q -f event-processor\pom.xml
-call mvn clean package -q -f gateway\pom.xml
+rem "cleaning packages"
+TIMEOUT /T 15
+call "%M2_HOME%\bin\mvn" clean package -q -f discovery\pom.xml
+call "%M2_HOME%\bin\mvn" clean package -q -f configuration\pom.xml
+call "%M2_HOME%\bin\mvn" clean package -q -f http-request-consumer\pom.xml
+call "%M2_HOME%\bin\mvn" clean package -q -f event-processor\pom.xml
+call "%M2_HOME%\bin\mvn" clean package -q -f gateway\pom.xml
 
+rem "building & uping containers"
 docker-machine ssh messaging-system docker-compose -f /mnt/app/messaging-system.yml build
 docker-machine ssh messaging-system docker-compose -f /mnt/app/messaging-system.yml up -d
 

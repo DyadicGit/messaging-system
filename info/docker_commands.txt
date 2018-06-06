@@ -5,6 +5,19 @@
 ** used this to get a container's log by using it's Id (got it whe doing docker-compose UP)
 docker-machine ssh messaging-system docker logs d041e625be1b
 
+docker-machine ssh messaging-system
 docker-machine ssh messaging-system docker inspect --format='{{json .State.Health}}' d041e625be1b
+docker-machine ssh messaging-system docker-compose -f /mnt/app/messaging-system.yml up -d --build
+docker-machine ssh messaging-system docker-compose -f /mnt/app/messaging-system.yml --verbose up -d --build
+docker-compose -f messaging-system.yml stop
+docker ps
+ docker-compose -f messaging-system.yml up -d
+ docker-compose -f messaging-system.yml build
+docker images
+docker build . -t app_kafka:latest
+docker logs cc <-- cc is first letters of and ID
 
-docker-machine ssh messaging-system docker-compose -f /mnt/app/messaging-system.yml up -d --force-recreate --build
+docker system prune -a		<-- removes all images
+docker system prune 		<-- removes all images that are broken tagged as <none>
+
+

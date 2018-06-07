@@ -29,4 +29,4 @@ cat /kafka/config/server.properties.template | sed \
 
 
 echo "Starting kafka"
-exec /kafka/bin/kafka-server-start.sh /kafka/config/server.properties
+exec kafka-server-start.sh /kafka/config/server.properties

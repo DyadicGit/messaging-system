@@ -43,9 +43,7 @@ call "%M2_HOME%\bin\mvn" clean package -q -f event-processor\pom.xml
 call "%M2_HOME%\bin\mvn" clean package -q -f gateway\pom.xml
 
 rem "building & uping containers"
-docker-machine ssh messaging-system docker-compose -f /mnt/app/messaging-system.yml build
-docker-machine ssh messaging-system docker-compose -f /mnt/app/messaging-system.yml up -d
-
+docker-machine ssh messaging-system docker-compose -f /mnt/app/messaging-system.yml up -d --build
 echo *******************************************************
 echo http://%MESSAGING_SYSTEM% - Application
 echo *******************************************************

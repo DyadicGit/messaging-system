@@ -7,4 +7,5 @@ Cloud-ready application based on Spring Cloud Stream and Apache Kafka (as a mess
 * Docker-machine
 
 ## Build and run
-To build and run clone this repo and execute script `run.bat`
+To build and run clone this repo and execute script `runWithEnv.bat` and press yes [Y], 
+[Y] launches a script that changes CRFL to LF eof's, it's for the Linux side of this system

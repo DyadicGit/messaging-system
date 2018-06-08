@@ -1,0 +1,10 @@
+::**In main.cmd:
+set param1=%~1
+set param2=%~2
+echo %param1% - %param2%
+
+::**In caller.cmd:
+call main.cmd hello world
+
+::**Output:
+hello - world

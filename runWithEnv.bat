@@ -1,3 +1,13 @@
+@ECHO OFF
+CHOICE /C YN /m "Run dos2unix on Dockerfile, .sh scripts & .propeties files "
+   goto sub_%ERRORLEVEL%
+
+:sub_1
+	call dos2unixScript.bat Dockerfile
+	call dos2unixScript.bat .sh
+	call dos2unixScript.bat .properties
+	
+:sub_2
 docker-machine rm messaging-system -f
 docker-machine create -d virtualbox --virtualbox-memory "4096" --virtualbox-cpu-count "2"  --virtualbox-disk-size "80000"  messaging-system
 docker-machine ip messaging-system > IP
@@ -13,15 +23,15 @@ vboxmanage startvm messaging-system --type emergencystop
 vboxmanage sharedfolder add %VM_NAME% --name %NAME% --hostpath %HOSTPATH% --automount
 vboxmanage sharedfolder remove %VM_NAME% --name c/Users
 vboxmanage startvm messaging-system
-TIMEOUT /T 30
-::pause
+TIMEOUT /T 50
 
+@ECHO ON
 docker-machine ssh messaging-system sudo curl -L "https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 docker-machine ssh messaging-system sudo chmod +x /usr/local/bin/docker-compose
 docker-machine ssh messaging-system sudo mkdir /mnt/app
 
 rem "Mounting application point as [app]"
-TIMEOUT /T 15
+TIMEOUT /T 20
 docker-machine ssh messaging-system sudo mount -t vboxsf app /mnt/app
 
 rem "cleaning packages"
@@ -40,3 +50,4 @@ echo *******************************************************
 echo http://%MESSAGING_SYSTEM% - Application
 echo *******************************************************
 pause
+

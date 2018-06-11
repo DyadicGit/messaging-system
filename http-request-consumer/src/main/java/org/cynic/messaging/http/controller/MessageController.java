@@ -30,4 +30,9 @@ public class MessageController {
                         build()
                 );
     }
+    @PostMapping("/ping")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void pingController(){
+        source.output().send(MessageBuilder.withPayload("Vini puh ty tut, Ezyk w tumane").build());
+    }
 }

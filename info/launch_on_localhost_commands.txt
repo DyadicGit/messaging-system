@@ -1,0 +1,12 @@
+** run kafka instances **
+zookeeper-server-start.bat ..\..\config\zookeeper.properties 
+kafka-server-start.bat ..\..\config\server.properties 
+
+** launch sequence is:
+	configuration
+	discovery
+	event-processor
+	http-request-consumer
+	gateway
+
+**

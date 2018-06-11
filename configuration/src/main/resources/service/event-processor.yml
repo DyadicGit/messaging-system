@@ -7,8 +7,8 @@ spring:
           group: http-messages
       kafka:
         binder:
-          zkNodes: zookeeper:2181
-          brokers: kafka:9092
+          zkNodes: localhost:2181
+          brokers: localhost:9092
 
 
 server:
